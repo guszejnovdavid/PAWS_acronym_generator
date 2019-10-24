@@ -1,10 +1,10 @@
-#Overview
+# Overview
 =====
 
 acronym_gen is a python algorithm to generate English acronyms from a set of keywords. 
 It is inspired by ACRONYM (Acronym CReatiON for You and Me, https://github.com/bacook17/acronym) but unlike ACRONYM this algporithm creates proper acronyms using the first N letters from keywords in all possible combinations.
 
-#Install
+# Install
 =====
 
 Can be installed with pip:
@@ -16,7 +16,7 @@ or by downloading the repository and then running
 $ make install
 ```
 
-#Usage
+# Usage
 =====
 
 acronym_gen is designed to be called in the format
@@ -31,7 +31,8 @@ Options:
    --use_synonyms             Whether to add the synonyms of the given keywords to the list (it can drastically increase the number of results, off by default)
    --strict=<f>               Sets how strictly should words be related to English [default: None]
 
-#Example
+# Example
+=====
 ```
 $python acronym_gen.py giant nebula star in --max_letters_to_use=2
         GIN : Giant In Nebula
