@@ -30,38 +30,42 @@ Options:
 
 # Example
 
+Let's try to name a simulation of stars in giant nebulas.
 ```
-$python acronym_gen.py giant nebula star in --max_letters_to_use=2
+$ python acronym_gen.py giant nebula star in --strict=1
+Using keywords:  ['giant', 'nebula', 'star', 'in']
+Numer of words to process 2155
+30 possible acronyms:
+        GIANT : GIANT
+        GIANTS : GIANT Star
         GIN : Giant In Nebula
         GIN : Giant IN
         GIN : GIant Nebula
-        GINN : Giant IN Nebula
-        GINNE : Giant IN NEbula
         GINS : Giant In Nebula Star
         GINS : Giant IN Star
         GINS : GIant Nebula Star
-        GIS : Giant In Star
-        GIS : GIant Star
         GIST : Giant In STar
         GIST : GIant STar
-        ING : In Nebula Giant
-        ING : IN Giant
         INN : IN Nebula
         INNS : IN Nebula Star
-        ISN : In Star Nebula
         IST : In STar
         NEST : NEbula STar
-        NING : Nebula IN Giant
+        NESTING : NEbula STar IN Giant
+        NIGS : Nebula In Giant Star
         SIGN : Star In Giant Nebula
-        SIGNE : Star In Giant NEbula
         SIN : Star In Nebula
         SIN : Star IN
+        SINE : Star In NEbula
         SING : Star In Nebula Giant
         SING : Star IN Giant
-        SINN : Star IN Nebula
-        SINNE : Star IN NEbula
-        STIG : STar In Giant
+        STAG : STAr Giant
+        STAIN : STAr In Nebula
+        STAIN : STAr IN
+        STAR : STAR
+        STARING : STAR In Nebula Giant
+        STARING : STAR IN Giant
         STING : STar In Nebula Giant
         STING : STar IN Giant
+
 ```
-At this point the user must pick out the ones that make sense, like SIGN : Stars In Giant Nebulas or STING : STars IN Giants
+At this point the user must pick out the ones that make sense, like SIGN : Stars In Giant Nebulas or STAIN : STArs In Nebula
