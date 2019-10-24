@@ -23,7 +23,8 @@ $paws_acronym <keywords> ... [options]
 ```
 
 Options:                                                                       
-   -h --help                         Show this screen.
+```
+   -h --help                         Shows options
    --forced_words=<words>            List of words (separated by commas) that MUST be part of the acronym (these words should be already included with keywords).
    --min_acronymlength=<N>           Minimum length of the acronym [default: 3]
    --max_letters_to_use=<N>          Sets the maximum number of letters that can be used from the beginning of keywords [default: 5]
@@ -31,7 +32,7 @@ Options:
    --use_synonyms_for_all           If turned on without all keywords can have synonyms. Note that this can drastically increase the number of results
    --strict=<f>                      Sets how strictly should words be related to English [default: None]
    --independence=<i1,i2...>         Defines dependences between keywords, if several words have the same id, only one can be used in an acronym (i.e. to handle synonyms). If undefined all keywords are assumed to be independent.
-
+```
 # Examples
 
 Let's try to name an algorithm that generates acronyms using synonyms.
