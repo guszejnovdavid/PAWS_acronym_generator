@@ -22,11 +22,14 @@ $python acronym_gen.py <keywords> ... [options]
 ```
 
 Options:                                                                       
-   -h --help                  Show this screen.
-   --min_acronymlength=<N>    Minimum length of the acronym [default: 3]
-   --max_letters_to_use=<N>   Sets the maximum number of letters that can be used from the beginning of keywords [default: 5]
-   --use_synonyms             Whether to add the synonyms of the given keywords to the list (it can drastically increase the number of results, off by default)
-   --strict=<f>               Sets how strictly should words be related to English [default: None]
+   -h --help                         Show this screen.
+   --forced_words=<words>            List of words (separated by commas) that MUST be part of the acronym (these words should be already included with keywords).
+   --min_acronymlength=<N>           Minimum length of the acronym [default: 3]
+   --max_letters_to_use=<N>          Sets the maximum number of letters that can be used from the beginning of keywords [default: 5]
+   --use_synonyms=<0,1,1...>         Whether to add the synonyms of the given keywords to the list (any >0 number means True, all zeros by default)
+   --use_synonyms_for_all           If turned on without all keywords can have synonyms. Note that this can drastically increase the number of results
+   --strict=<f>                      Sets how strictly should words be related to English [default: None]
+   --independence=<i1,i2...>         Defines dependences between keywords, if several words have the same id, only one can be used in an acronym (i.e. to handle synonyms). If undefined all keywords are assumed to be independent.
 
 # Example
 
