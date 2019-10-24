@@ -8,7 +8,7 @@ The code is highly customizable, it is possible to set which keywords can be rep
 
 Can be installed with pip:
 ```
-$ pip install paws_acronym
+$ pip3 install paws_acronym
 ```
 or by downloading the repository and then running
 ```
