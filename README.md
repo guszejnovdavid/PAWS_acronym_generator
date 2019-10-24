@@ -29,7 +29,7 @@ Options:
    --min_acronymlength=<N>           Minimum length of the acronym [default: 3]
    --max_letters_to_use=<N>          Sets the maximum number of letters that can be used from the beginning of keywords [default: 5]
    --use_synonyms=<0,1,1...>         Whether to add the synonyms of the given keywords to the list (any >0 number means True, all zeros by default)
-   --use_synonyms_for_all           If turned on without all keywords can have synonyms. Note that this can drastically increase the number of results
+   --use_synonyms_for_all            If turned on without all keywords can have synonyms. Note that this can drastically increase the number of results
    --strict=<f>                      Sets how strictly should words be related to English [default: None]
    --independence=<i1,i2...>         Defines dependences between keywords, if several words have the same id, only one can be used in an acronym (i.e. to handle synonyms). If undefined all keywords are assumed to be independent.
 ```
@@ -49,7 +49,7 @@ Words processed, 7 acronyms found, filtering for extra criteria...
         SAC : Synonyms ACronym
         SAGE : Synonyms Acronym GEnerator
 ```
-These are quite limited in scope, we could get a lot more options if we added some optional adjectives and prepositions. Also, we could replace 'generator' with 'algorithm' or 'code'. To avoid repetition of similar words we can define them to be dependent on each other, so we get maximum one adjective, one preposition and one of 'code'/'generator'/'algorithm'. Also, it is a good idea to enable the use of synonyms. Note that allowing synonyms for words like 'good' will lead to a lot of possible acronyms so let's filter our results to the ones that include the key words of 'acronym' and 'synonyms'. 
+These are quite limited in scope, we could get a lot more options if we added some optional adjectives and prepositions. Also, we could replace `generator` with `algorithm` or `code`. To avoid repetition of similar words we can define them to be dependent on each other, so we get maximum one adjective, one preposition and one of `code`/`generator`/`algorithm`. Also, it is a good idea to enable the use of synonyms. Note that allowing synonyms for words like `good` will lead to a lot of possible acronyms so let's filter our results to the ones that include the key words of `acronym` and `synonyms`. 
 ```
 $ paws_acronym acronym generator code algorithm synonyms with of from good proper --independence=0,1,1,1,2,3,3,3,4,4 --use_synonyms=0,0,0,0,0,1,1,1,1,1 --forced_words=acronym,synonyms
 Using keywords:  acronym adept algorithm beneficial code commodity dear dependable effective estimable expert from full generator good goodness honest honorable just near of practiced proficient proper respectable right ripe safe salutary secure serious skilful skillful sound soundly synonyms thoroughly undecomposed unspoiled unspoilt upright well with
