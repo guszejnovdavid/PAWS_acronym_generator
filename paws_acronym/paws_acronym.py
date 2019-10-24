@@ -110,7 +110,7 @@ def main():
         keywordlist=temp_keywordlist
         independence_list = np.array(temp_independence_list)[uniq_idx]
     #Print keywords
-    print("Using keywords: ",' '.join(keywordlist))
+    print("Using %d keywords: "%(len(keywordlist)),' '.join(keywordlist))
     keywordlist=np.array(keywordlist)
     independence_list=np.array(independence_list)
     if (len(np.unique(independence_list))!=len(independence_list)):
