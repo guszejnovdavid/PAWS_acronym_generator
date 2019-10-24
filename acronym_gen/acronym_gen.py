@@ -112,7 +112,7 @@ def main():
     #Print keywords
     keywordlist=np.array(keywordlist)
     independence_list=np.array(independence_list)
-    print("Using keywords: ",keywordlist.astype('S'))
+    print("Using keywords: ",[str(w) for w in keywordlist])
     if (len(np.unique(independence_list))!=len(independence_list)):
         print("Keyword dependencies: ", independence_list)
     #Collect all the letters of the alphabet used in keywords, used to filter the words to test
