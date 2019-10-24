@@ -64,4 +64,4 @@ $python acronym_gen.py giant nebula star in --max_letters_to_use=2
         STING : STar In Nebula Giant
         STING : STar IN Giant
 ```
-At this point the use must pick out the ones that make sense, like SIGN : Stars In Giant Nebulas or STING : STars IN Giants
+At this point the user must pick out the ones that make sense, like SIGN : Stars In Giant Nebulas or STING : STars IN Giants
