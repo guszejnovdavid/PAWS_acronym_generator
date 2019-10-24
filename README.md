@@ -8,7 +8,7 @@ The code is highly customizable, it is possible to set which keywords can be rep
 
 Can be installed with pip:
 ```
-$ pip install paws_acronym_gen
+$ pip install paws_acronym
 ```
 or by downloading the repository and then running
 ```
@@ -37,7 +37,7 @@ Options:
 Let's try to name an algorithm that generates acronyms using synonyms.
 ```
 $ paws_acronym acronym generator synonyms
-Using keywords:  ['acronym', 'generator', 'synonyms']
+Using keywords:  acronym generator synonyms
 Number of words to process 460
 Words processed, 7 acronyms found, filtering for extra criteria...
         AGE : Acronym GEnerator
@@ -50,9 +50,8 @@ Words processed, 7 acronyms found, filtering for extra criteria...
 ```
 These are quite limited in scope, we could get a lot more options if we added some optional adjectives and prepositions. Also, we could replace 'generator' with 'algorithm' or 'code'. To avoid repetition of similar words we can define them to be dependent on each other, so we get maximum one adjective, one preposition and one of 'code'/'generator'/'algorithm'. Also, it is a good idea to enable the use of synonyms. Note that allowing synonyms for words like 'good' will lead to a lot of possible acronyms so let's filter our results to the ones that include the key words of 'acronym' and 'synonyms'. 
 ```
-$ paws_acronym acronym generator code algorithm synonyms with of from good proper --independence=0,1,1,1,2,3,3,3,4,4 --use_synonyms=0,0,0,0,0,1,1,1,
-1,1 --forced_words=acronym,synonyms
-Using keywords:  ['acronym', 'adept', 'algorithm', 'beneficial', 'code', 'commodity', 'dear', 'dependable', 'effective', 'estimable', 'expert', 'from', 'full', 'generator', 'good', 'goodness', 'honest', 'honorable', 'just', 'near', 'of', 'practiced', 'proficient', 'proper', 'respectable', 'right', 'ripe', 'safe', 'salutary', 'secure', 'serious', 'skilful', 'skillful', 'sound', 'soundly', 'synonyms', 'thoroughly', 'undecomposed', 'unspoiled', 'unspoilt', 'upright', 'well', 'with']
+$ paws_acronym acronym generator code algorithm synonyms with of from good proper --independence=0,1,1,1,2,3,3,3,4,4 --use_synonyms=0,0,0,0,0,1,1,1,1,1 --forced_words=acronym,synonyms
+Using keywords:  acronym adept algorithm beneficial code commodity dear dependable effective estimable expert from full generator good goodness honest honorable just near of practiced proficient proper respectable right ripe safe salutary secure serious skilful skillful sound soundly synonyms thoroughly undecomposed unspoiled unspoilt upright well with
 Keyword dependencies:  [0. 4. 1. 4. 1. 4. 4. 4. 4. 4. 4. 3. 4. 1. 4. 4. 4. 4. 4. 4. 3. 4. 4. 4.
  4. 4. 4. 4. 4. 4. 4. 4. 4. 4. 4. 2. 4. 4. 4. 4. 4. 4. 3.]
 Number of words to process 29492
