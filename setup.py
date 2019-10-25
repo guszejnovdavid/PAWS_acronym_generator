@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='paws_acronym',
-    version='0.2.4',
+    version='0.3.0',
     author='David Guszejnov',
     author_email='guszejnov.david@gmail.com',
     description='Proper Acronyms With Synonyms, creates acronyms from a list of keywords',

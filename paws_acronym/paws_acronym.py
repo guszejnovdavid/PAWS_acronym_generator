@@ -2,6 +2,7 @@
 """                                                                            
 Algorithm that lists possible English acronyms from a listed keywords. 
 It is inspired by ACRONYM (Acronym CReatiON for You and Me, https://github.com/bacook17/acronym) but unlike ACRONYM this algporithm creates proper acronyms using the first letters keywords in all possible combinations.
+Keywords are to be entered separated by spaces (e.g., `large code`). To allow the code to substitute a word with its synonyms, put a `*` in front of the word (e.g., `*good`). It is also possible to group words together by listing them one after another, separeted by commas and no whitespaces, from each group only one word is used in an acronym (e.g., `bike,car`)
 
 Usage: acronym_gen.py <keywords> ... [options]
 
@@ -10,10 +11,8 @@ Options:
    --forced_words=<words>            List of words (separated by commas) that MUST be part of the acronym (these words should be already included with keywords).
    --min_acronymlength=<N>           Minimum length of the acronym [default: 3]
    --max_letters_to_use=<N>          Sets the maximum number of letters that can be used from the beginning of keywords [default: 5]
-   --use_synonyms=<0,1,1...>         Whether to add the synonyms of the given keywords to the list (any >0 number means True, all zeros by default)
-   --use_synonyms_for_all            If turned on without all keywords can have synonyms. Note that this can drastically increase the number of results
-   --strict=<f>                      Sets how strictly should words be related to English [default: None]
-   --independence=<i1,i2...>         Defines dependences between keywords, if several words have the same id, only one can be used in an acronym (i.e. to handle synonyms). If undefined all keywords are assumed to be independent.
+   --use_synonyms_for_all            If turned on, all keywords can have synonyms. Note that this can drastically increase the number of results
+   --strict=<f>                      Sets how strictly should words be related to English by changing the `nltk` word corpus (0: `words`, 1: `brown`, other: `gutenberg`) [default: None]
 """
 from __future__ import print_function
 import numpy as np
@@ -41,7 +40,7 @@ def get_synonyms(word):
 #global
 combinations=[]
 
-def next_piece_in_word(wordlist, word, independence_list, orig_word=None,prev_choices=[],max_letters_to_use=3,):
+def next_piece_in_word(wordlist, word, group_list, orig_word=None,prev_choices=[],max_letters_to_use=3,):
     #Checks which strings from wordlist matches the beginning of word, using 1-max_letters_to_use size chunks.
     #Recursive code, if it is possible to reconstruct the full word then the appropriate choices are saved to the global variable combinations
     global combinations
@@ -57,18 +56,39 @@ def next_piece_in_word(wordlist, word, independence_list, orig_word=None,prev_ch
                     combinations.append(new_choices) #store solution
                 else:
                     #find unique ID of w 
-                    new_wordlist=wordlist[independence_list!=independence_list[j]] #remove the word we have just used, we can't repeat them or any of its dependents (e.g. synonyms)
-                    new_independence_list = independence_list[independence_list!=independence_list[j]]
+                    new_wordlist=wordlist[group_list!=group_list[j]] #remove the word we have just used, we can't repeat them or any of its dependents (e.g. synonyms)
+                    new_group_list = group_list[group_list!=group_list[j]]
                     if len(new_wordlist):
                         new_word=word[(i+1):] #move onto the rest of the word we want to construct
                         #Call recursion
-                        next_piece_in_word(new_wordlist, new_word, new_independence_list, orig_word=orig_word,\
+                        next_piece_in_word(new_wordlist, new_word, new_group_list, orig_word=orig_word,\
                                               prev_choices=new_choices,max_letters_to_use=max_letters_to_use)
 
 def main():
     #Get options
     options = docopt(__doc__)    
     keywordlist = [w.lower()  for w in options["<keywords>"]]
+    #Init grouping
+    group_list=list(range(len(keywordlist)))
+    #Look for grouped words
+    temp_keywordlist=keywordlist[:]; temp_group_list=group_list[:]
+    for i,w in enumerate(keywordlist):
+        if (len(w.split(','))>1):
+            temp_keywordlist.remove(w)
+            groupid=group_list[i]
+            temp_group_list.remove(groupid)
+            for w2 in w.split(','):
+                temp_keywordlist.append(w2)
+                temp_group_list.append(groupid)
+    keywordlist=temp_keywordlist[:]; group_list=temp_group_list[:]
+    #Look for words that allow synonyms
+    use_synonyms = np.full(len(keywordlist),False)
+    for i,w in enumerate(keywordlist):
+        if (w[0]=='*'):
+            use_synonyms[i]=True
+            keywordlist[i]=w[1:]
+    if options["--use_synonyms_for_all"]:
+        use_synonyms = np.full(len(keywordlist),True)
     if options["--forced_words"]:
         forced_words = [w.lower()  for w in options["--forced_words"].split(',')]
         #Check if all the forced words are included with keywords
@@ -80,41 +100,29 @@ def main():
     max_letters_to_use=int(options["--max_letters_to_use"])
     strict=options["--strict"]
     if (strict!='None'): strict=int(strict)
-    if options["--use_synonyms_for_all"]:
-        use_synonyms = np.full(len(keywordlist),True)
-    elif options["--use_synonyms"]:
-        use_synonyms = np.array([int(c) for c in options["--use_synonyms"].split(',')],dtype=np.bool)
-    else:
-        use_synonyms = np.full(len(keywordlist),False)
-    #Independence list, if we two words have the same dependence we only use one, i.e. this ensures we only use one of several synonyms
-    if options["--independence"]:
-        independence_list = [float(c) for c in options["--independence"].split(',')]
-    else:
-        #default to assume they are all usable independently
-        independence_list = list(range(len(keywordlist)))
     #init global    
     global combinations
     combinations = []
     #Add synonyms if needed, note that this will add a LOT of new results many using synonyms of the same word several times
     if np.sum(use_synonyms):
         temp_keywordlist=keywordlist[:]
-        temp_independence_list=independence_list[:]
+        temp_group_list=group_list[:]
         for i, w in enumerate(keywordlist):
             if use_synonyms[i]:
                 syns=get_synonyms(w)
                 for s in syns:
                     if (s.isalpha()):
                         temp_keywordlist.append(s.lower())
-                        temp_independence_list.append(independence_list[i])
+                        temp_group_list.append(group_list[i])
         temp_keywordlist, uniq_idx=np.unique(temp_keywordlist,return_index=True)
-        keywordlist=temp_keywordlist
-        independence_list = np.array(temp_independence_list)[uniq_idx]
+        keywordlist=temp_keywordlist[:]
+        group_list = np.array(temp_group_list)[uniq_idx]
     #Print keywords
     print("Using %d keywords: "%(len(keywordlist)),' '.join(keywordlist))
     keywordlist=np.array(keywordlist)
-    independence_list=np.array(independence_list)
-    if (len(np.unique(independence_list))!=len(independence_list)):
-        print("Keyword dependencies: ", independence_list)
+    group_list=np.array(group_list)
+    if (len(np.unique(group_list))!=len(group_list)):
+        print("Keyword groups: ", group_list)
     #Collect all the letters of the alphabet used in keywords, used to filter the words to test
     key_chars=[]
     for w in keywordlist:
@@ -133,7 +141,7 @@ def main():
     print("Number of words to process %d"%(len(word_list)))
     #See which ones of these can be recovered
     for w in word_list:
-        next_piece_in_word(keywordlist, w, independence_list, max_letters_to_use=max_letters_to_use)
+        next_piece_in_word(keywordlist, w, group_list, max_letters_to_use=max_letters_to_use)
     #List possible acronyms
     if len(combinations):
         print("Words processed, %d acronyms found, filtering for extra criteria... "%(len(combinations)))
