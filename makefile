@@ -1,4 +1,4 @@
-VERSION := $(shell python -c "import acronym_gen; print(acronym_gen.__version__)")
+VERSION := $(shell python -c "import paws_acronym; print(paws_acronym.__version__)")
 
 default: install
 
