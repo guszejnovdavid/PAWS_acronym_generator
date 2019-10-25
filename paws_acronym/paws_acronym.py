@@ -65,9 +65,17 @@ def next_piece_in_word(wordlist, word, group_list, orig_word=None,prev_choices=[
                                               prev_choices=new_choices,max_letters_to_use=max_letters_to_use)
 
 def main():
-    #Get options
+    # Get options
     options = docopt(__doc__)    
     keywordlist = [w.lower()  for w in options["<keywords>"]]
+    # Handle forced words
+    if options["--forced_words"]:
+        forced_words = [w.lower()  for w in options["--forced_words"].split(',')]
+        # Check if all the forced words are included with keywords
+        for fw in forced_words:
+            if not np.sum(np.array(keywordlist)==fw):
+                print("Forced word "+fw+" not included in keywords, adding it now (may cause errors with other settings).")
+                keywordlist.append(fw)
     #Init grouping
     group_list=list(range(len(keywordlist)))
     #Look for grouped words
@@ -81,21 +89,16 @@ def main():
                 temp_keywordlist.append(w2)
                 temp_group_list.append(groupid)
     keywordlist=temp_keywordlist[:]; group_list=temp_group_list[:]
-    #Look for words that allow synonyms
-    use_synonyms = np.full(len(keywordlist),False)
-    for i,w in enumerate(keywordlist):
-        if (w[0]=='*'):
-            use_synonyms[i]=True
-            keywordlist[i]=w[1:]
+    # Look for words that allow synonyms
     if options["--use_synonyms_for_all"]:
         use_synonyms = np.full(len(keywordlist),True)
-    if options["--forced_words"]:
-        forced_words = [w.lower()  for w in options["--forced_words"].split(',')]
-        #Check if all the forced words are included with keywords
-        for fw in forced_words:
-            if not np.sum(np.array(keywordlist)==fw):
-                print("Forced word "+fw+" not included in keywords, adding it now (may cause errors with other settings).")
-                keywordlist.append(fw)
+    else:
+        use_synonyms = np.full(len(keywordlist),False)
+        for i,w in enumerate(keywordlist):
+            if (w[0]=='*'):
+                use_synonyms[i]=True
+                keywordlist[i]=w[1:]
+
     min_acronymlength=int(options["--min_acronymlength"])
     max_letters_to_use=int(options["--max_letters_to_use"])
     strict=options["--strict"]
@@ -126,7 +129,7 @@ def main():
     #Collect all the letters of the alphabet used in keywords, used to filter the words to test
     key_chars=[]
     for w in keywordlist:
-        for c in w[0:(max_letters_to_use)]:
+        for c in w[0:max_letters_to_use]:
             key_chars.append(c)
     key_chars=np.unique(key_chars)
     #Choose word corpus based on how strict we are with the words we can use
